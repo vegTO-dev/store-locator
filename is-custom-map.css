@@ -1,0 +1,113 @@
+[data-is-map-filters] {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  [data-is-map-filters] > span:not(.active) {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  [data-is-map-filters] .search_bar {
+    margin-top: 0;
+  }
+  [data-is-map-wrapper] {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  [data-is-map] {
+    min-height: 500px;
+  }
+  [data-is-map-list-item] {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  [data-is-map-list-item] > div {
+    width: 50%;
+  }
+
+  [data-is-map-list-item] .is-map__list-item__image {
+    max-width:200px;
+  }
+  
+  [data-is-map-list] .is-map__list-item__info .button_wrapper {
+    margin-top: 1rem;
+  }
+
+  [data-is-pagination] {
+    grid-column: 1 / span 2;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    position: relative;
+  }
+  [data-is-paging] {
+    display: none;
+    border: none;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    font-family: 'Platform web', sans-serif;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background-color: transparent;
+  }
+  [data-is-paging].prev-btn {
+    position: absolute;
+    left: 0;
+  }
+  [data-is-paging].next-btn {
+    position: absolute;
+    right: 0;
+  }
+  [data-is-paging].active {
+    display: block;
+  }
+  @media screen and (max-width:767px){
+    [data-is-map-wrapper] {
+      display: block;
+    }
+    [data-is-map] {
+      display: none;
+    }
+    [data-is-map-list] {
+    	display: grid;
+    	grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    [data-is-map-list] .is-map__list-item__image {
+      width: 30%;
+    }
+    [data-is-map-list] .is-map__list-item__info {
+      width: 70%;
+    }
+    [data-is-map-list] .is-map__list-item__info .button {
+      max-width: 100%;
+    }
+  }
+  @media screen and (max-width:680px){
+    [data-is-map-list],
+    [data-is-map-list-item] {
+      display: block;
+    }
+    [data-is-map-list] .is-map__list-item__image {
+      width: 100%;
+      margin-bottom: 1.5rem;
+      max-width: none;
+    }
+    [data-is-map-list] .is-map__list-item__image img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+    }
+    [data-is-map-list] .is-map__list-item__info {
+    	width: 100%;
+      margin-bottom: 2rem;
+    }
+  }
