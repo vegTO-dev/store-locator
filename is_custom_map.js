@@ -206,6 +206,17 @@ function initMap() {
         anchor: new google.maps.Point(15, 30),
     };
 
+    const svgMarkerYellow = {
+        path: "M66.9,41.8c0-11.3-9.1-20.4-20.4-20.4c-11.3,0-20.4,9.1-20.4,20.4c0,11.3,20.4,32.4,20.4,32.4S66.9,53.1,66.9,41.8z M37,41.4c0-5.2,4.3-9.5,9.5-9.5c5.2,0,9.5,4.2,9.5,9.5c0,5.2-4.2,9.5-9.5,9.5C41.3,50.9,37,46.6,37,41.4z",
+        fillColor: "#e1ff00",
+        fillOpacity: 1,
+        strokeWeight: 1,
+        strokeColor: "#000000",
+        rotation: 0,
+        scale: 0.75,
+        anchor: new google.maps.Point(15, 30),
+    };
+
     map = new google.maps.Map(
         document.querySelector('[data-is-map]'),
         {
@@ -276,7 +287,7 @@ function initMap() {
                 results[i]['info'][0]['marker'] = new google.maps.Marker({
                     position: results[i]['info'][0]['latlng'],
                     map: map,
-                    icon: (results[i]['info'][0]['discount'] ? svgMarkerPink : svgMarkerGreen),
+                    icon: ((results[i]['info'][0]['featured_discount'] || results[i]['info'][0]['featured_listing']) ? svgMarkerYellow : results[i]['info'][0]['discount'] ? svgMarkerPink : svgMarkerGreen),
                     title: results[i]['info'][0]['name']
                 });
 
