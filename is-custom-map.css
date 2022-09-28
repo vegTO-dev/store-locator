@@ -59,7 +59,7 @@
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 1.5rem;
     position: relative;
 }
@@ -73,10 +73,24 @@
     display: block;
 }
 
+[data-is-pagination] > span {
+    font-family: 'Martin', sans-serif;
+    padding: 10px;
+}
+
 [data-is-pagination] > span.active,
 [data-is-pagination] > span.first-page,
-[data-is-pagination] > span.last-page {
+[data-is-pagination] > span.last-page,
+[data-is-pagination] > span.next-btn {
     display: inline-block;
+}
+
+[data-is-pagination] > span.last-page.current + .next-btn {
+    display: none !important;
+}
+
+[data-is-pagination] > span.current {
+    background-color: #e1ff00;
 }
 
 [data-is-pagination] > span.first-page.add-ellipses::after,
@@ -86,7 +100,7 @@
 
 [data-is-map-info] {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 15px;
 }
 
