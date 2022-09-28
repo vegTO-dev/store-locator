@@ -76,6 +76,7 @@
 [data-is-pagination] > span {
     font-family: 'Martin', sans-serif;
     padding: 10px;
+    font-size: 1.875rem;
 }
 
 [data-is-pagination] > span.active,
