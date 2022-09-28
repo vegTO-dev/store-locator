@@ -118,6 +118,15 @@
     max-width: 100%;
 }
 
+.is-map__info__details > a {
+    display: inline-block;
+    font-family: 'Martin', sans-serif;
+    font-size: 1.6rem;
+    background-color: #e1ff00;
+    text-transform: uppercase;
+    padding: 5px 10px;
+}
+
 @media screen and (max-width: 768px) {
     [data-is-map-wrapper] {
         display: block;
