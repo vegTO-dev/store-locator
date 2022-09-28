@@ -239,7 +239,7 @@ function initMap() {
             partner.info[0]['marker'] = new google.maps.Marker({
                 position: partner.info[0]['latlng'],
                 map: map,
-                icon: ((results[i]['info'][0]['featured_discount'] || results[i]['info'][0]['featured_listing']) ? svgMarkerYellow : results[i]['info'][0]['discount'] ? svgMarkerPink : svgMarkerGreen),
+                icon: ((partner.info[0]['featured_discount'] || partner.info[0]['featured_listing']) ? svgMarkerYellow : partner.info[0]['discount'] ? svgMarkerPink : svgMarkerGreen),
                 title: partner.info[0]['name']
             });
         } else {
