@@ -295,6 +295,14 @@ function initMap() {
             }
         }
     }
+
+    function lazyloadImages(page) {
+        $('[data-is-map-page="' + page + '"] .is-map__list-item__image img').each(function() {
+            if (typeof $(this).attr('src') === "undefined") {
+                $(this).attr('src', $(this).attr('data-src'));
+            }
+        });
+    }
     
     function catName(id, collectionJson = partner_cat) {
         const cat = collectionJson.find(cat => cat.id == id);
@@ -309,11 +317,9 @@ function initMap() {
             let x = document.createElement('span');
             x.setAttribute('data-is-map-pagination', i);
             if (i == 0) {
-                x.classList.add('active');
                 x.classList.add('first-page');
             } else if (i == pages - 1) {
                 x.classList.add('last-page');
-                x.classList.add('add-ellipses');
             }
             x.innerHTML = (i + 1);
             pagination.append(x);
@@ -324,18 +330,29 @@ function initMap() {
         }
 
         pagination.children().click(function (e) {
-            pagination.children().removeClass('add-ellipses');
+            pagination.children().removeClass('add-ellipses').removeClass('active').removeClass('current');
             
-            if (parseInt($(this).attr('data-is-map-pagination')) > 3) {
+            const currentActive = parseInt($(this).attr('data-is-map-pagination'));
+
+            if (currentActive > 3) {
                 pagination.children('span.first-page').addClass('add-ellipses');
             }
 
-            if (parseInt($(this).attr('data-is-map-pagination')) < pages - 3) {
+            if (currentActive < pages - 3) {
                 pagination.children('span.last-page').addClass('add-ellipses');
             }
 
+            if ($('[data-is-map-page=' + (currentActive + 1) + ']').length > 0) {
+                pagination.children('span.next-btn').attr('data-is-map-pagination', (currentActive + 1));
+            }
+
+            const currentPage = $('[data-is-map-pagination=' + currentActive + ']:not(.next-btn)')
+            currentPage.addClass('current').addClass('active');
+            currentPage.prev().addClass('active').prev().addClass('active');
+            currentPage.next().addClass('active').next().addClass('active');
+
             $('[data-is-map-current]').attr('data-is-map-current', parseInt($(this).attr('data-is-map-pagination')));
-        });
+        }).first().click();
     }
 
     function listPartners(results) {
@@ -368,7 +385,7 @@ function initMap() {
             }
 
             if(typeof results[i]['info'][0].image != undefined) {
-                x.innerHTML = (results[i]['info'][0]['image'] ? "<div class=\"is-map__list-item__image\"><img src=\"" + results[i]['info'][0]['image'] + "\" alt=\"" + results[i]['info'][0].image_alt + "\" /></div>" : "") + "<div class=\"is-map__list-item__info\">" + (results[i]['info'][0].name && results[i]['info'][0].name.trim() != '' ? "<h3 class=\"blog_title\">" + results[i]['info'][0].name + "</h3>" : "") + (results[i]['info'][0].category ? "<p class=\"text-size-small text-style-allcaps\">" + catName(results[i]['info'][0].category) + "</p>" : "") + (results[i]['info'][0].address ? '<p>' + results[i]['info'][0].address + '</p>' : '') + (results[i]['info'][0].discount ? "<p class=\"text-listing-discount\"><strong>" + results[i]['info'][0].discount + "</strong></p>" : "") + (results[i]['info'][0].website && results[i]['info'][0].website.trim() != '' ? "<div class=\"button_wrapper\"><a href=\"" + results[i]['info'][0].website + "\" target=\"_blank\" class=\"button w-button\">Visit Website</a></div>" : "") + "</div></div>";
+                x.innerHTML = (results[i]['info'][0]['image'] ? "<div class=\"is-map__list-item__image\"><img data-src=\"" + results[i]['info'][0]['image'] + "\" alt=\"" + results[i]['info'][0].image_alt + "\" /></div>" : "") + "<div class=\"is-map__list-item__info\">" + (results[i]['info'][0].name && results[i]['info'][0].name.trim() != '' ? "<h3 class=\"blog_title\">" + results[i]['info'][0].name + "</h3>" : "") + (results[i]['info'][0].category ? "<p class=\"text-size-small text-style-allcaps\">" + catName(results[i]['info'][0].category) + "</p>" : "") + (results[i]['info'][0].address ? '<p>' + results[i]['info'][0].address + '</p>' : '') + (results[i]['info'][0].discount ? "<p class=\"text-listing-discount\"><strong>" + results[i]['info'][0].discount + "</strong></p>" : "") + (results[i]['info'][0].website && results[i]['info'][0].website.trim() != '' ? "<div class=\"button_wrapper\"><a href=\"" + results[i]['info'][0].website + "\" target=\"_blank\" class=\"button w-button\">Visit Website</a></div>" : "") + "</div></div>";
             }
 
             if(typeof marker === "object" && marker != null) { 
@@ -396,16 +413,10 @@ function initMap() {
             if (mutation.type !== "attributes" && mutation.attributeName != "data-is-map-current") {
                 continue;
             } else {
-                const currentActive = parseInt(mutation.target.attributes['data-is-map-current'].value);
-                $('[data-is-map-page], [data-is-map-pagination]').removeClass('active').removeClass('current');
-                $('[data-is-map-page=' + currentActive + '], [data-is-map-pagination=' + currentActive + ']').addClass('active').addClass('current');
-                $('[data-is-map-pagination=' + (currentActive + 1) + '], [data-is-map-pagination=' + (currentActive + 2) + '], [data-is-map-pagination=' + (currentActive - 1) + '], [data-is-map-pagination=' + (currentActive - 2) + ']').addClass('active');
-                
-                if ($('[data-is-map-page=' + (currentActive + 1) + ']').length > 0) {
-                    $('[data-is-map-pagination].next-btn').addClass('active').attr('data-is-map-pagination', (currentActive + 1));
-                } else {
-                    $('[data-is-map-pagination].next-btn').removeClass('active')
-                }
+                const currentActive = mutation.target.attributes['data-is-map-current'].value;
+                $('[data-is-map-page]').removeClass('active');
+                $('[data-is-map-page=' + currentActive + ']').addClass('active');
+                lazyloadImages(currentActive);
                 break;
             }
         }
